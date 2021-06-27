@@ -27,28 +27,29 @@ use 'skbolton/moonshot.nvim'
 
 Add fenced code blocks to your markdown documents.
 
-<code>
 <pre>
+<code>
 ```sh
 echo "Hello Literate Programming"
 ```
-</pre>
 </code>
+</pre>
 
 With your cursor in the block you can run:
 
 `:lua require'moonshot'.run_cursor()`
 
 And you should see the following.
-<code>
+
 <pre>
+<code>
 ```sh
 echo "Hello, Literate Programming"
 ```
-</pre>
 :RESULTS:
 "Hello, Literate Programming
 </code>
+</pre>
 
 Add as many of these code blocks as you'd like. If you decide you want to run them all at the same time you can run this:
 
