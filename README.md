@@ -57,6 +57,12 @@ Add as many of these code blocks as you'd like. If you decide you want to run th
 :lua require'moonshot'.run_all()`
 ```
 
+We aren't just limited to running `echo` either. Any command can be ran in a block. For example if you have the [github cli](https://cli.github.com/) try running this block.
+
+```sh
+gh pr list
+```
+
 ## Available Commands
 
 The following are all the available commands. Bind them to the keys of your choice, no default key bindings are put in place.
