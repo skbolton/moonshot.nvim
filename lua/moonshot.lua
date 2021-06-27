@@ -1,19 +1,13 @@
 local Fence = require'fence'
 local api = vim.api
 
--- DELETE ME
-api.nvim_set_keymap('n', '<leader>>', '<cmd> lua require("bastille").run_all()<CR>', {noremap = true})
-api.nvim_set_keymap('n', '<leader>=', '<cmd> lua require("bastille").run_cursor()<CR>', {noremap = true})
-api.nvim_set_keymap('n', '<leader><', '<cmd> lua require("bastille").clean_all()<CR>', {noremap = true})
-api.nvim_set_keymap('n', '<leader>%', '<cmd> lua require("bastille").clean_cursor()<CR>', {noremap = true})
-
-local Bastille = {}
+local Moonshot = {}
 
 local fences = {}
 
 -- Parse lines in buffer to build Fences from markdown fence blocks
-Bastille.build_fences = function()
-  Bastille.destroy_fences()
+Moonshot.build_fences = function()
+  Moonshot.destroy_fences()
   local lines = vim.fn.readfile(api.nvim_buf_get_name(0))
   local opens = {}
   local closes = {}
@@ -31,13 +25,14 @@ Bastille.build_fences = function()
 end
 
 -- Run code in fences and output the results
-Bastille.run_all = function()
+Moonshot.run_all = function()
   for _, fence in pairs(fences) do
     Fence.execute(fence)
   end
 end
 
-Bastille.run_cursor = function()
+-- Run code only at cursor location
+Moonshot.run_cursor = function()
   local cursor_line = api.nvim_win_get_cursor(0)[1]
   for _, fence in pairs(fences) do
     if Fence.in_fence(fence, cursor_line) then
@@ -48,28 +43,8 @@ Bastille.run_cursor = function()
   end
 end
 
-Bastille.add_fence = function()
-  local cursor_line = api.nvim_win_get_cursor(0)[1]
-  -- ensure we aren't injecting into an existing fence
-  local in_existing = false
-  for _, fence in pairs(fences) do
-    if Fence.in_fence(fence, cursor_line) then
-      in_existing = true
-      break
-    end
-  end
-
-  if in_existing then
-    api.nvim_echo({{"Cannot create fence inside exising fence", "Error"}}, false, {})
-    return
-  end
-
-  vim.fn.append(cursor_line, {"```", "```"})
-  table.insert(fences, Fence.new(cursor_line, cursor_line + 1))
-end
-
 -- Remove results from all fences
-Bastille.clean_all = function()
+Moonshot.clean_all = function()
   -- TODO: Figure out a better of deleting without Fence needing to move the cursor
   -- until then get a reference to where cursor was before job
   local start_cursor = api.nvim_win_get_cursor(0)
@@ -85,7 +60,7 @@ Bastille.clean_all = function()
 end
 
 -- Remove result from fence under cursor
-Bastille.clean_cursor = function()
+Moonshot.clean_cursor = function()
   local cursor_line = api.nvim_win_get_cursor(0)[1]
   for _, fence in pairs(fences) do
     if Fence.in_fence(fence, cursor_line) then
@@ -94,7 +69,7 @@ Bastille.clean_cursor = function()
   end
 end
 
-Bastille.destroy_fences = function()
+Moonshot.destroy_fences = function()
   for _, fence in pairs(fences) do
     Fence.destroy(fence)
   end
@@ -102,9 +77,4 @@ Bastille.destroy_fences = function()
   fences = {}
 end
 
-Bastille.show_fences = function()
-  extmarks = api.nvim_buf_get_extmarks(0, api.nvim_create_namespace("bastille"), 0, -1, {})
-  print(vim.inspect(extmarks))
-end
-
-return Bastille
+return Moonshot
