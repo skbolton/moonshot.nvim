@@ -44,7 +44,7 @@ local BUFFER = 0
 -- all extmarks will be on the first column every time
 local COLUMN = 0
 -- namespace for all extmarks
-local NS = api.nvim_create_namespace("bastille") 
+local NS = api.nvim_create_namespace("moonshot") 
 
 
 -- Create a new fence based on starting and ending lines
