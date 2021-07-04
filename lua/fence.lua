@@ -106,7 +106,16 @@ end
 Fence.add_results = function(fence, results)
   Fence.clean_results(fence)
   table.insert(results, 1, ":RESULTS:")
-  vim.fn.append(Fence.ends_at(fence), results)
+  -- trim output to drop any extra spacing or returns
+  local trimmed_results = {}
+  for _, line in pairs(results) do
+    local trimmed = vim.fn.trim(line)
+    if trimmed ~= "" then
+      table.insert(trimmed_results, trimmed)
+    end
+  end
+
+  vim.fn.append(Fence.ends_at(fence), trimmed_results)
 end
 
 -- Ensure that `fence` is not displaying any results
