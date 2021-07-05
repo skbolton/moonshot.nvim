@@ -109,7 +109,7 @@ Fence.add_results = function(fence, results)
   -- trim output to drop any extra spacing or returns
   local trimmed_results = {}
   for _, line in pairs(results) do
-    local trimmed = vim.fn.trim(line)
+    local trimmed = vim.fn.trim(line, "\r\n")
     if trimmed ~= "" then
       table.insert(trimmed_results, trimmed)
     end
