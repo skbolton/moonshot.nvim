@@ -56,12 +56,12 @@ end
 
 -- Match against possible opening `fence` syntax
 Fence.match_opening = function(line)
-  return string.match(line, "^```(%w+)")
+  return string.match(line, "^%s*```(%w+)")
 end
 
 -- Match against possible closing `fence` syntax
 Fence.match_closing = function(line)
-  return string.match(line, "^```$")
+  return string.match(line, "^%s*```$")
 end
 
 -- returns whether a line number is in `fence`.
